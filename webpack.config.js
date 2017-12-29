@@ -5,11 +5,12 @@ module.exports = {
   context: path.join(__dirname, '/src'),
   devtool: 'source-maps',
   entry: {
-    javascript: './js/index'
+    'bundle.js': './js/index',
+    'main.css': './scss/main.scss'
   },
 
   output: {
-    filename: 'bundle.js',
+    filename: '[name]',
     path: path.join(__dirname, '/dist'),
   },
 
@@ -33,8 +34,15 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        loader: ExtractTextPlugin.extract('css-loader!sass-loader')
       }
     ]
-  }
+  },
+
+  plugins: [
+    new ExtractTextPlugin('[name]', {
+      allChunks: true
+    })
+  ]
+
 };
